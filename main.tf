@@ -5,7 +5,8 @@ locals {
     for k1, v1 in var.repositories : {
       for k2, v2 in coalesce(v1.actions_environment_secrets, {}) :
       "${k1}/${k2}" => merge(v2, {
-        repository = module.repositories.repositories_name["${k1}"]
+        repository  = module.repositories.repositories_name["${k1}"]
+        environment = try(module.repository_environments.repository_environments_environment["${k1}/${v2.environment}"], v2.environment)
       })
     }
   ]...)
@@ -14,7 +15,8 @@ locals {
     for k1, v1 in var.repositories : {
       for k2, v2 in coalesce(v1.actions_environment_variables, {}) :
       "${k1}/${k2}" => merge(v2, {
-        repository = module.repositories.repositories_name["${k1}"]
+        repository  = module.repositories.repositories_name["${k1}"]
+        environment = try(module.repository_environments.repository_environments_environment["${k1}/${v2.environment}"], v2.environment)
       })
     }
   ]...)
@@ -230,7 +232,8 @@ locals {
     for k1, v1 in var.repositories : {
       for k2, v2 in coalesce(v1.repository_environment_deployment_policies, {}) :
       "${k1}/${k2}" => merge(v2, {
-        repository = module.repositories.repositories_name["${k1}"]
+        repository  = module.repositories.repositories_name["${k1}"]
+        environment = try(module.repository_environments.repository_environments_environment["${k1}/${v2.environment}"], v2.environment)
       })
     }
   ]...)
@@ -325,13 +328,13 @@ module "repositories" {
 module "actions_environment_secrets" {
   source                      = "git::https://github.com/AeternaModules/github_actions_environment_secret.git?ref=v6.13.0"
   actions_environment_secrets = local.actions_environment_secrets
-  depends_on                  = [module.repositories]
+  depends_on                  = [module.repositories, module.repository_environments]
 }
 
 module "actions_environment_variables" {
   source                        = "git::https://github.com/AeternaModules/github_actions_environment_variable.git?ref=v6.13.0"
   actions_environment_variables = local.actions_environment_variables
-  depends_on                    = [module.repositories]
+  depends_on                    = [module.repositories, module.repository_environments]
 }
 
 module "actions_repository_access_levels" {
@@ -475,7 +478,7 @@ module "repository_environments" {
 module "repository_environment_deployment_policies" {
   source                                     = "git::https://github.com/AeternaModules/github_repository_environment_deployment_policy.git?ref=v6.13.0"
   repository_environment_deployment_policies = local.repository_environment_deployment_policies
-  depends_on                                 = [module.repositories]
+  depends_on                                 = [module.repositories, module.repository_environments]
 }
 
 module "repository_files" {
