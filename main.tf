@@ -39,9 +39,9 @@ locals {
     }
   ]...)
 
-  actions_repository_permissionses = merge([
+  actions_repository_permissions = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.actions_repository_permissionses, {}) :
+      for k2, v2 in coalesce(v1.actions_repository_permissions, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
@@ -129,18 +129,18 @@ locals {
     }
   ]...)
 
-  issue_labels = merge([
+  issue_label_entries = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.issue_labels, {}) :
+      for k2, v2 in coalesce(v1.issue_label_entries, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
     }
   ]...)
 
-  issue_labelses = merge([
+  issue_labels = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.issue_labelses, {}) :
+      for k2, v2 in coalesce(v1.issue_labels, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
@@ -165,18 +165,18 @@ locals {
     }
   ]...)
 
-  repository_collaborators = merge([
+  repository_collaborator_entries = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.repository_collaborators, {}) :
+      for k2, v2 in coalesce(v1.repository_collaborator_entries, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
     }
   ]...)
 
-  repository_collaboratorses = merge([
+  repository_collaborators = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.repository_collaboratorses, {}) :
+      for k2, v2 in coalesce(v1.repository_collaborators, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
@@ -192,9 +192,9 @@ locals {
     }
   ]...)
 
-  repository_dependabot_security_updateses = merge([
+  repository_dependabot_security_updates = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.repository_dependabot_security_updateses, {}) :
+      for k2, v2 in coalesce(v1.repository_dependabot_security_updates, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
@@ -256,9 +256,9 @@ locals {
     }
   ]...)
 
-  repository_pageses = merge([
+  repository_pages = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.repository_pageses, {}) :
+      for k2, v2 in coalesce(v1.repository_pages, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
@@ -283,18 +283,18 @@ locals {
     }
   ]...)
 
-  repository_topicses = merge([
+  repository_topics = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.repository_topicses, {}) :
+      for k2, v2 in coalesce(v1.repository_topics, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
     }
   ]...)
 
-  repository_vulnerability_alertses = merge([
+  repository_vulnerability_alerts = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.repository_vulnerability_alertses, {}) :
+      for k2, v2 in coalesce(v1.repository_vulnerability_alerts, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
@@ -310,9 +310,9 @@ locals {
     }
   ]...)
 
-  workflow_repository_permissionses = merge([
+  workflow_repository_permissions = merge([
     for k1, v1 in var.repositories : {
-      for k2, v2 in coalesce(v1.workflow_repository_permissionses, {}) :
+      for k2, v2 in coalesce(v1.workflow_repository_permissions, {}) :
       "${k1}/${k2}" => merge(v2, {
         repository = module.repositories.repositories_name["${k1}"]
       })
@@ -349,10 +349,10 @@ module "actions_repository_oidc_subject_claim_customization_templates" {
   depends_on                                                    = [module.repositories]
 }
 
-module "actions_repository_permissionses" {
-  source                           = "git::https://github.com/AeternaModules/github_actions_repository_permissions.git?ref=v6.13.0"
-  actions_repository_permissionses = local.actions_repository_permissionses
-  depends_on                       = [module.repositories]
+module "actions_repository_permissions" {
+  source                         = "git::https://github.com/AeternaModules/github_actions_repository_permissions.git?ref=v6.13.0"
+  actions_repository_permissions = local.actions_repository_permissions
+  depends_on                     = [module.repositories]
 }
 
 module "actions_secrets" {
@@ -409,16 +409,16 @@ module "issues" {
   depends_on = [module.repositories]
 }
 
-module "issue_labels" {
+module "issue_label_entries" {
   source       = "git::https://github.com/AeternaModules/github_issue_label.git?ref=v6.13.0"
-  issue_labels = local.issue_labels
+  issue_labels = local.issue_label_entries
   depends_on   = [module.repositories]
 }
 
-module "issue_labelses" {
-  source         = "git::https://github.com/AeternaModules/github_issue_labels.git?ref=v6.13.0"
-  issue_labelses = local.issue_labelses
-  depends_on     = [module.repositories]
+module "issue_labels" {
+  source       = "git::https://github.com/AeternaModules/github_issue_labels.git?ref=v6.13.0"
+  issue_labels = local.issue_labels
+  depends_on   = [module.repositories]
 }
 
 module "releases" {
@@ -433,16 +433,16 @@ module "repository_autolink_references" {
   depends_on                     = [module.repositories]
 }
 
-module "repository_collaborators" {
+module "repository_collaborator_entries" {
   source                   = "git::https://github.com/AeternaModules/github_repository_collaborator.git?ref=v6.13.0"
-  repository_collaborators = local.repository_collaborators
+  repository_collaborators = local.repository_collaborator_entries
   depends_on               = [module.repositories]
 }
 
-module "repository_collaboratorses" {
-  source                     = "git::https://github.com/AeternaModules/github_repository_collaborators.git?ref=v6.13.0"
-  repository_collaboratorses = local.repository_collaboratorses
-  depends_on                 = [module.repositories]
+module "repository_collaborators" {
+  source                   = "git::https://github.com/AeternaModules/github_repository_collaborators.git?ref=v6.13.0"
+  repository_collaborators = local.repository_collaborators
+  depends_on               = [module.repositories]
 }
 
 module "repository_custom_properties" {
@@ -451,10 +451,10 @@ module "repository_custom_properties" {
   depends_on                   = [module.repositories]
 }
 
-module "repository_dependabot_security_updateses" {
-  source                                   = "git::https://github.com/AeternaModules/github_repository_dependabot_security_updates.git?ref=v6.13.0"
-  repository_dependabot_security_updateses = local.repository_dependabot_security_updateses
-  depends_on                               = [module.repositories]
+module "repository_dependabot_security_updates" {
+  source                                 = "git::https://github.com/AeternaModules/github_repository_dependabot_security_updates.git?ref=v6.13.0"
+  repository_dependabot_security_updates = local.repository_dependabot_security_updates
+  depends_on                             = [module.repositories]
 }
 
 module "repository_deploy_keys" {
@@ -493,10 +493,10 @@ module "repository_milestones" {
   depends_on            = [module.repositories]
 }
 
-module "repository_pageses" {
-  source             = "git::https://github.com/AeternaModules/github_repository_pages.git?ref=v6.13.0"
-  repository_pageses = local.repository_pageses
-  depends_on         = [module.repositories]
+module "repository_pages" {
+  source           = "git::https://github.com/AeternaModules/github_repository_pages.git?ref=v6.13.0"
+  repository_pages = local.repository_pages
+  depends_on       = [module.repositories]
 }
 
 module "repository_projects" {
@@ -511,16 +511,16 @@ module "repository_rulesets" {
   depends_on          = [module.repositories]
 }
 
-module "repository_topicses" {
-  source              = "git::https://github.com/AeternaModules/github_repository_topics.git?ref=v6.13.0"
-  repository_topicses = local.repository_topicses
-  depends_on          = [module.repositories]
+module "repository_topics" {
+  source            = "git::https://github.com/AeternaModules/github_repository_topics.git?ref=v6.13.0"
+  repository_topics = local.repository_topics
+  depends_on        = [module.repositories]
 }
 
-module "repository_vulnerability_alertses" {
-  source                            = "git::https://github.com/AeternaModules/github_repository_vulnerability_alerts.git?ref=v6.13.0"
-  repository_vulnerability_alertses = local.repository_vulnerability_alertses
-  depends_on                        = [module.repositories]
+module "repository_vulnerability_alerts" {
+  source                          = "git::https://github.com/AeternaModules/github_repository_vulnerability_alerts.git?ref=v6.13.0"
+  repository_vulnerability_alerts = local.repository_vulnerability_alerts
+  depends_on                      = [module.repositories]
 }
 
 module "repository_webhooks" {
@@ -529,9 +529,9 @@ module "repository_webhooks" {
   depends_on          = [module.repositories]
 }
 
-module "workflow_repository_permissionses" {
-  source                            = "git::https://github.com/AeternaModules/github_workflow_repository_permissions.git?ref=v6.13.0"
-  workflow_repository_permissionses = local.workflow_repository_permissionses
-  depends_on                        = [module.repositories]
+module "workflow_repository_permissions" {
+  source                          = "git::https://github.com/AeternaModules/github_workflow_repository_permissions.git?ref=v6.13.0"
+  workflow_repository_permissions = local.workflow_repository_permissions
+  depends_on                      = [module.repositories]
 }
 

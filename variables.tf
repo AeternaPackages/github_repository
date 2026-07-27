@@ -65,7 +65,7 @@ Nested actions_repository_oidc_subject_claim_customization_templates (github_act
         - use_default
     Optional:
         - include_claim_keys
-Nested actions_repository_permissionses (github_actions_repository_permissions):
+Nested actions_repository_permissions (github_actions_repository_permissions):
     Optional:
         - allowed_actions
         - enabled
@@ -135,14 +135,14 @@ Nested issues (github_issue):
         - body
         - labels
         - milestone_number
-Nested issue_labels (github_issue_label):
+Nested issue_label_entries (github_issue_label):
     Required:
         - color
         - name
     Optional:
         - description
         - etag
-Nested issue_labelses (github_issue_labels):
+Nested issue_labels (github_issue_labels):
     Optional:
         - label (block)
 Nested releases (github_release):
@@ -162,13 +162,13 @@ Nested repository_autolink_references (github_repository_autolink_reference):
         - target_url_template
     Optional:
         - is_alphanumeric
-Nested repository_collaborators (github_repository_collaborator):
+Nested repository_collaborator_entries (github_repository_collaborator):
     Required:
         - username
     Optional:
         - permission
         - permission_diff_suppression
-Nested repository_collaboratorses (github_repository_collaborators):
+Nested repository_collaborators (github_repository_collaborators):
     Optional:
         - ignore_team (block)
         - team (block)
@@ -178,7 +178,7 @@ Nested repository_custom_properties (github_repository_custom_property):
         - property_name
         - property_type
         - property_value
-Nested repository_dependabot_security_updateses (github_repository_dependabot_security_updates):
+Nested repository_dependabot_security_updates (github_repository_dependabot_security_updates):
     Required:
         - enabled
 Nested repository_deploy_keys (github_repository_deploy_key):
@@ -229,7 +229,7 @@ Nested repository_milestones (github_repository_milestone):
         - description
         - due_date
         - state
-Nested repository_pageses (github_repository_pages):
+Nested repository_pages (github_repository_pages):
     Optional:
         - build_type
         - cname
@@ -251,10 +251,10 @@ Nested repository_rulesets (github_repository_ruleset):
     Optional:
         - bypass_actors (block)
         - conditions (block)
-Nested repository_topicses (github_repository_topics):
+Nested repository_topics (github_repository_topics):
     Required:
         - topics
-Nested repository_vulnerability_alertses (github_repository_vulnerability_alerts):
+Nested repository_vulnerability_alerts (github_repository_vulnerability_alerts):
     Optional:
         - enabled
 Nested repository_webhooks (github_repository_webhook):
@@ -264,7 +264,7 @@ Nested repository_webhooks (github_repository_webhook):
         - active
         - etag
         - configuration (block)
-Nested workflow_repository_permissionses (github_workflow_repository_permissions):
+Nested workflow_repository_permissions (github_workflow_repository_permissions):
     Optional:
         - can_approve_pull_request_reviews
         - default_workflow_permissions
@@ -361,7 +361,7 @@ EOT
       use_default        = bool
       include_claim_keys = optional(list(string))
     })))
-    actions_repository_permissionses = optional(map(object({
+    actions_repository_permissions = optional(map(object({
       allowed_actions      = optional(string)
       enabled              = optional(bool)
       sha_pinning_required = optional(bool)
@@ -451,13 +451,13 @@ EOT
       labels           = optional(set(string))
       milestone_number = optional(number)
     })))
-    issue_labels = optional(map(object({
+    issue_label_entries = optional(map(object({
       color       = string
       name        = string
       description = optional(string)
       etag        = optional(string)
     })))
-    issue_labelses = optional(map(object({
+    issue_labels = optional(map(object({
       label = optional(list(object({
         color       = string
         description = optional(string)
@@ -479,12 +479,12 @@ EOT
       target_url_template = string
       is_alphanumeric     = optional(bool)
     })))
-    repository_collaborators = optional(map(object({
+    repository_collaborator_entries = optional(map(object({
       username                    = string
       permission                  = optional(string)
       permission_diff_suppression = optional(bool)
     })))
-    repository_collaboratorses = optional(map(object({
+    repository_collaborators = optional(map(object({
       ignore_team = optional(list(object({
         team_id = string
       })))
@@ -502,7 +502,7 @@ EOT
       property_type  = string
       property_value = set(string)
     })))
-    repository_dependabot_security_updateses = optional(map(object({
+    repository_dependabot_security_updates = optional(map(object({
       enabled = bool
     })))
     repository_deploy_keys = optional(map(object({
@@ -553,7 +553,7 @@ EOT
       due_date    = optional(string)
       state       = optional(string)
     })))
-    repository_pageses = optional(map(object({
+    repository_pages = optional(map(object({
       build_type     = optional(string)
       cname          = optional(string)
       https_enforced = optional(bool)
@@ -682,10 +682,10 @@ EOT
         })
       }))
     })))
-    repository_topicses = optional(map(object({
+    repository_topics = optional(map(object({
       topics = set(string)
     })))
-    repository_vulnerability_alertses = optional(map(object({
+    repository_vulnerability_alerts = optional(map(object({
       enabled = optional(bool)
     })))
     repository_webhooks = optional(map(object({
@@ -699,7 +699,7 @@ EOT
         url          = string
       }))
     })))
-    workflow_repository_permissionses = optional(map(object({
+    workflow_repository_permissions = optional(map(object({
       can_approve_pull_request_reviews = optional(bool)
       default_workflow_permissions     = optional(string)
     })))
@@ -712,7 +712,7 @@ EOT
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.actions_environment_variables, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.actions_repository_access_levels, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.actions_repository_oidc_subject_claim_customization_templates, {})) : !strcontains(kk, "/")]]),
-      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.actions_repository_permissionses, {})) : !strcontains(kk, "/")]]),
+      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.actions_repository_permissions, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.actions_secrets, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.actions_variables, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.app_installation_repositories, {})) : !strcontains(kk, "/")]]),
@@ -722,27 +722,27 @@ EOT
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.codespaces_secrets, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.dependabot_secrets, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.issues, {})) : !strcontains(kk, "/")]]),
+      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.issue_label_entries, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.issue_labels, {})) : !strcontains(kk, "/")]]),
-      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.issue_labelses, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.releases, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_autolink_references, {})) : !strcontains(kk, "/")]]),
+      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_collaborator_entries, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_collaborators, {})) : !strcontains(kk, "/")]]),
-      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_collaboratorses, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_custom_properties, {})) : !strcontains(kk, "/")]]),
-      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_dependabot_security_updateses, {})) : !strcontains(kk, "/")]]),
+      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_dependabot_security_updates, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_deploy_keys, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_deployment_branch_policies, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_environments, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_environment_deployment_policies, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_files, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_milestones, {})) : !strcontains(kk, "/")]]),
-      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_pageses, {})) : !strcontains(kk, "/")]]),
+      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_pages, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_projects, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_rulesets, {})) : !strcontains(kk, "/")]]),
-      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_topicses, {})) : !strcontains(kk, "/")]]),
-      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_vulnerability_alertses, {})) : !strcontains(kk, "/")]]),
+      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_topics, {})) : !strcontains(kk, "/")]]),
+      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_vulnerability_alerts, {})) : !strcontains(kk, "/")]]),
       flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.repository_webhooks, {})) : !strcontains(kk, "/")]]),
-      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.workflow_repository_permissionses, {})) : !strcontains(kk, "/")]])
+      flatten([for k0, v0 in var.repositories : [for kk in keys(coalesce(v0.workflow_repository_permissions, {})) : !strcontains(kk, "/")]])
     ))
     error_message = "Map keys in this package must not contain '/': it is used internally as a nesting-key separator, so a key containing it can silently collide two different nested entries into one. Rename the offending key(s)."
   }
